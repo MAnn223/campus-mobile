@@ -6,9 +6,9 @@ import 'package:campus_mobile_experimental/core/models/cards.dart';
 import 'package:campus_mobile_experimental/core/models/notices.dart';
 import 'package:campus_mobile_experimental/core/providers/bottom_nav.dart';
 import 'package:campus_mobile_experimental/core/providers/cards.dart';
+import 'package:campus_mobile_experimental/core/providers/connectivity.dart';
 import 'package:campus_mobile_experimental/core/providers/map.dart';
 import 'package:campus_mobile_experimental/core/providers/notices.dart';
-import 'package:campus_mobile_experimental/core/providers/wayfinding.dart';
 import 'package:campus_mobile_experimental/main.dart';
 import 'package:campus_mobile_experimental/ui/availability/availability_card.dart';
 import 'package:campus_mobile_experimental/ui/classes/classes_card.dart';
@@ -26,14 +26,11 @@ import 'package:campus_mobile_experimental/ui/parking/parking_card.dart';
 import 'package:campus_mobile_experimental/ui/scanner/native_scanner_card.dart';
 import 'package:campus_mobile_experimental/ui/shuttle/shuttle_card.dart';
 import 'package:campus_mobile_experimental/ui/student_id/student_id_card.dart';
-import 'package:campus_mobile_experimental/ui/survey/survey_card.dart';
-import 'package:campus_mobile_experimental/ui/ventilation/ventilation_card.dart';
 import 'package:campus_mobile_experimental/ui/weather/weather_card.dart';
 import 'package:campus_mobile_experimental/ui/wifi/wifi_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uni_links2/uni_links.dart';
 
 class Home extends StatefulWidget {
@@ -42,6 +39,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  InternetConnectivityProvider? _connectivityProvider;
   Future<Null> initUniLinks(BuildContext context) async {
     // deep links are received by this method
     // the specific host needs to be added in AndroidManifest.xml and Info.plist
@@ -87,7 +85,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     initUniLinks(context);
-    checkToResumeBluetooth(context);
+    _connectivityProvider = Provider.of<InternetConnectivityProvider>(context);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: cardMargin, vertical: 0.0),
       child: ListView(
@@ -130,9 +128,6 @@ class _HomeState extends State<Home> {
           case 'MyStudentChart':
             orderedCards.add(MyStudentChartCard());
             break;
-          case 'student_survey':
-            orderedCards.add(SurveyCard());
-            break;
           case 'dining':
             orderedCards.add(DiningCard());
             break;
@@ -172,9 +167,6 @@ class _HomeState extends State<Home> {
           case 'shuttle':
             orderedCards.add(ShuttleCard());
             break;
-          case 'ventilation':
-            orderedCards.add(VentilationCard());
-            break;
         }
       } else {
         // dynamically insert webCards into the list
@@ -187,19 +179,5 @@ class _HomeState extends State<Home> {
       }
     }
     return orderedCards;
-  }
-
-  void checkToResumeBluetooth(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? preference = prefs.getBool("advancedWayfindingEnabled");
-
-    if (prefs.containsKey("advancedWayfindingEnabled") && preference == true) {
-      WayfindingProvider bluetoothSingleton =
-          Provider.of<WayfindingProvider>(context, listen: false);
-      bluetoothSingleton.advancedWayfindingEnabled = true;
-      if (bluetoothSingleton.ongoingScanner == null) {
-        bluetoothSingleton.init();
-      }
-    }
   }
 }

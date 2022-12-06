@@ -1,3 +1,4 @@
+import 'package:campus_mobile_experimental/app_constants.dart';
 import 'package:campus_mobile_experimental/app_styles.dart';
 import 'package:flutter/material.dart';
 
@@ -41,19 +42,17 @@ class CardContainer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             ListTile(
+              contentPadding: EdgeInsets.only(
+                  top: 0.0, right: 6.0, bottom: 0.0, left: 12.0),
+              visualDensity: VisualDensity(horizontal: 0, vertical: 0),
               title: Text(
                 titleText!,
                 style: TextStyle(
                   color: Colors.grey,
-                  fontSize: 20.0,
+                  fontSize: 18.0,
                 ),
               ),
-              trailing: ButtonBar(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  buildMenu()!,
-                ],
-              ),
+              trailing: buildMenu()!,
             ),
             buildBody(context),
             Padding(
@@ -86,7 +85,7 @@ class CardContainer extends StatelessWidget {
         var customErrorText = '';
         if (errorText!.contains('Exception')) {
           customErrorText =
-              'Your finals could not be displayed.\n\nIf the problem persists contact mobile@ucsd.edu';
+              'Your finals could not be displayed.\n\nIf the problem persists contact mobilesupport@ucsd.edu';
         } else {
           customErrorText = 'No finals found.';
         }
@@ -98,7 +97,7 @@ class CardContainer extends StatelessWidget {
         var customErrorText = '';
         if (errorText!.contains('Exception')) {
           customErrorText =
-              'Your classes could not be displayed.\n\nIf the problem persists contact mobile@ucsd.edu';
+              'Your classes could not be displayed.\n\nIf the problem persists contact mobilesupport@ucsd.edu';
         } else {
           customErrorText = 'No classes found.';
         }
@@ -119,7 +118,7 @@ class CardContainer extends StatelessWidget {
               )),
         ),
       );
-    } else if (titleText == "Availability") {
+    } else if (titleText == "Busyness") {
       // web cards are still sized with static values
       return Container(
         width: double.infinity,
@@ -153,23 +152,25 @@ class CardContainer extends StatelessWidget {
 
   Widget? buildMenu() {
     if (hideMenu ?? false) {
-      return null;
+      return Container();
     } else if (titleText == "Scanner") {
       return ButtonBar(
+        buttonPadding: EdgeInsets.all(0),
         mainAxisSize: MainAxisSize.min,
         children: [
           buildMenuOptions({
-            'reload': reload,
+            CardMenuOptionConstants.reloadCard: reload,
           }),
         ],
       );
     }
     return ButtonBar(
+      buttonPadding: EdgeInsets.all(0),
       mainAxisSize: MainAxisSize.min,
       children: [
         buildMenuOptions({
-          'reload': reload,
-          'hide': hide,
+          CardMenuOptionConstants.reloadCard: reload,
+          CardMenuOptionConstants.hideCard: hide,
         }),
       ],
     );
@@ -198,12 +199,12 @@ class CardContainer extends StatelessWidget {
 
   void onMenuItemPressed(String? selectedMenuItem) {
     switch (selectedMenuItem) {
-      case 'reload':
+      case CardMenuOptionConstants.reloadCard:
         {
           reload();
         }
         break;
-      case 'hide':
+      case CardMenuOptionConstants.hideCard:
         {
           hide();
         }

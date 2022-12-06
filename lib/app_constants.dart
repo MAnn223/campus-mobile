@@ -11,16 +11,12 @@ class RoutePaths {
   static const String Notifications = 'notifications';
   static const String Profile = 'profile';
   static const String CardsView = 'profile/cards_view';
-  static const String BeaconView = 'profile/beacon_view';
-  static const String AutomaticBluetoothLoggerView =
-      'profile/automatic_bluetooth_logger_view';
-  static const String BluetoothPermissionsView =
-      'profile/bluetooth_permissions_view';
   static const String NotificationsSettingsView =
       'notifications/notifications_settings';
 
   static const String NewsViewAll = 'news/newslist';
   static const String EventsViewAll = 'events/eventslist';
+  static const String EventsAll = 'events/events_view_all';
   static const String NewsDetailView = 'news/news_detail_view';
   static const String EventDetailView = 'events/event_detail_view';
   static const String LinksViewAll = 'links/links_list';
@@ -39,11 +35,9 @@ class RoutePaths {
   static const String SpotTypesView = "parking/spot_types_view";
   static const String ParkingStructureView = "parking/parking_structure_view";
   static const String ParkingLotsView = "parking/parking_lots_view";
-  static const String VentilationBuildings = "ventilation/buildings";
-  static const String VentilationFloors = "ventilation/floors";
-  static const String VentilationRooms = "ventilation/rooms";
   static const String NeighborhoodsView = "parking/neighborhoods_view";
   static const String NeighborhoodsLotsView = "parking/neighborhoods_lot_view";
+  static const String AvailabilityDetailedView = "availability/detailed_view";
 }
 
 class RouteTitles {
@@ -63,23 +57,22 @@ class RouteTitles {
     'availability/manage_locations_view': 'Manage Locations',
     'shuttle/manage_shuttle_view': 'Manage Shuttle Stops',
     'shuttle/add_shuttle_stops_view': 'Add Shuttle Stops',
-    'parking/manage_parking_view': 'Parking: Manage Lots',
-    'parking/neighborhoods_lot_view': 'Parking: Manage Lots',
-    'parking/neighborhoods_view': 'Parking: Manage Lots',
-    'parking/parking_lots_view': 'Parking: Manage Lots',
-    'parking/parking_structure_view': 'Parking: Manage Lots',
-    'parking/spot_types_view': 'Parking: Manage Spots',
+    'parking/manage_parking_view': 'Manage Lots',
+    'parking/neighborhoods_lot_view': 'Manage Lots',
+    'parking/neighborhoods_view': 'Manage Lots',
+    'parking/parking_lots_view': 'Manage Lots',
+    'parking/parking_structure_view': 'Manage Lots',
+    'parking/spot_types_view': 'Manage Spots',
     'dining/dining_list_view': 'Dining',
     'dining/dining_detail_view': 'Dining',
     'dining/dining_nutrition_view': 'Dining',
-    'ventilation/buildings': 'HVAC: Manage Location',
-    'ventilation/floors': 'HVAC: Manage Location',
-    'ventilation/rooms': 'HVAC: Manage Location',
+    'availability/detailed_view': 'Busyness'
   };
 }
 
 class ParkingDefaults {
   static const defaultLots = [
+    "Gilman",
     "406",
     "784",
     "P782",
@@ -91,7 +84,7 @@ class ParkingDefaults {
 }
 
 class ButtonText {
-  static const ScanNowFull = 'Scan Your COVID-19 Test Kit.';
+  static const ScanNowFull = 'Scan Your COVID-19 Kit.';
   static const ScanNow = 'Scan Now';
   static const SignInFull = 'Sign In to Scan Your COVID-19 Test Kit.';
   static const SignIn = 'Sign In';
@@ -101,16 +94,21 @@ class ErrorConstants {
   static const authorizedPostErrors = 'Failed to upload data: ';
   static const authorizedPutErrors = 'Failed to update data: ';
   static const invalidBearerToken = 'Invalid bearer token';
+  static const notAcceptable =
+      'DioError [DioErrorType.response]: Http status error [406]';
   static const duplicateRecord =
       'DioError [DioErrorType.response]: Http status error [409]';
   static const invalidMedia =
       'DioError [DioErrorType.response]: Http status error [415]';
   static const silentLoginFailed = "Silent login failed";
+  static const locationFailed = "Location was not available";
 }
 
 class ScannerConstants {
   static const duplicateRecord =
       'Submission failed due to barcode already scanned. Please discard this test tube and get another one.\nCode #1035';
+  static const duplicateRecordBloodScreen =
+      'Submission failed because this barcode has already been scanned. Please discard this kit.\nCode #1035';
   static const invalidMedia =
       'Barcode is not valid. Please scan another barcode.\nCode #1036';
   static const barcodeError =
@@ -120,6 +118,8 @@ class ScannerConstants {
   static const loggedOut = 'An error occurred. Please try again.\nCode #1039';
   static const unknownError =
       'An error occurred. Please try again.\nCode #1040';
+  static const notAcceptable =
+      'Do not test within 30 days after receiving a positive test for COVID-19. Place all materials in the recycle and trash receptacles.\nCode #1041';
   static const scannerReauthFailure =
       'Your session has expired. Please login to submit a scan.';
   static const noRecentScan = 'No scan submitted';
@@ -164,18 +164,12 @@ class DataPersistence {
   static const UserProfileModel = 'UserProfileModel';
 }
 
-class VentilationConstants {
-  static const addLocationFailed = 'addLocationFailed';
-  static const removeLocationFailed = 'removeLocationFailed';
-}
-
 /// Maps Card IDs to Card titles
 class CardTitleConstants {
   static const titleMap = {
     'NativeScanner': 'Scanner',
     'MyStudentChart': 'MyStudentChart',
     'MyUCSDChart': 'MyUCSDChart',
-    'student_survey': 'Student Survey',
     'student_id': 'Student ID',
     'speed_test': "Speed Test",
     'employee_id': 'Employee ID',
@@ -183,11 +177,21 @@ class CardTitleConstants {
     'schedule': 'Classes',
     'shuttle': "Shuttle",
     'dining': 'Dining',
-    'availability': 'Availability',
+    'availability': 'Busyness',
     'events': 'Events',
     'news': 'News',
     'parking': 'Parking',
     'weather': 'Weather',
-    'ventilation': 'Office Environment',
   };
+}
+
+class CardMenuOptionConstants {
+  static const reloadCard = 'reload card';
+  static const hideCard = 'hide card';
+}
+
+class ConnectivityConstants {
+  static const offlineAlert =
+      'It appears you are currently offline. Check network status and try again.';
+  static const offlineTitle = 'No Internet';
 }

@@ -15,7 +15,7 @@ class ShuttleDataProvider extends ChangeNotifier {
     _isLoading = false;
 
     /// TODO: initialize services here
-//    _shuttleService = ShuttleService();
+    // _shuttleService = ShuttleService();
     init();
   }
 
@@ -45,10 +45,11 @@ class ShuttleDataProvider extends ChangeNotifier {
     // create new map of shuttles/stops to display
     Map<int?, ShuttleStopModel> newMapOfStops = Map<int?, ShuttleStopModel>();
     if (await _shuttleService.fetchData()) {
+      _shuttleService.data.sort((a, b) => (a.name)!.compareTo(b.name!));
+
       for (ShuttleStopModel model in _shuttleService.data) {
         newMapOfStops[model.id] = model;
       }
-
       fetchedStops = newMapOfStops;
 
       /// if the user is logged in we want to sync the order of parking lots amongst all devices
@@ -57,10 +58,14 @@ class ShuttleDataProvider extends ChangeNotifier {
       }
 
       // get closest stop to current user
-      calculateClosestStop();
-      getArrivalInformation();
-    }
+      print('Start closest stop calc');
+      await calculateClosestStop();
+      print('Calc closest stop done');
 
+      print('Start get arrival');
+      await getArrivalInformation();
+      print('End get arrival');
+    }
     _isLoading = false;
     notifyListeners();
   }
@@ -109,7 +114,7 @@ class ShuttleDataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void calculateClosestStop() {
+  Future<void> calculateClosestStop() async {
     //make sure we have users location before we do any calculations
     if (_userCoords == null ||
         _userCoords!.lon == null ||
@@ -117,18 +122,21 @@ class ShuttleDataProvider extends ChangeNotifier {
       print("returned because coordinates null");
       return;
     }
+
     for (ShuttleStopModel shuttleStop in _shuttleService.data) {
       stopLat = shuttleStop.lat;
       stopLong = shuttleStop.lon;
-
       if (getHaversineDistance(
               _userCoords!.lat, _userCoords!.lon, stopLat, stopLong) <
           closestDistance) {
         closestDistance = getHaversineDistance(
             _userCoords!.lat, _userCoords!.lon, stopLat, stopLong);
         _closestStop = shuttleStop;
+        print('closest=' + shuttleStop.name.toString());
       }
     }
+
+    notifyListeners();
   }
 
   double getHaversineDistance(lat1, lon1, lat2, lon2) {
@@ -149,7 +157,7 @@ class ShuttleDataProvider extends ChangeNotifier {
     return deg * (Math.pi / 180);
   }
 
-  void getArrivalInformation() async {
+  Future<void> getArrivalInformation() async {
     if (_closestStop != null) {
       arrivalsToRender![_closestStop!.id] =
           await fetchArrivalInformation(_closestStop!.id!);
@@ -157,6 +165,8 @@ class ShuttleDataProvider extends ChangeNotifier {
     for (ShuttleStopModel stop in stopsToRender) {
       arrivalsToRender![stop.id] = await fetchArrivalInformation(stop.id!);
     }
+
+    notifyListeners();
   }
 
   Future<List<ArrivingShuttle>> fetchArrivalInformation(int stopID) async {

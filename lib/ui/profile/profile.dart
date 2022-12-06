@@ -62,7 +62,7 @@ class Profile extends StatelessWidget {
           Card(
             child: ListTile(
               leading: Icon(Icons.feedback),
-              title: Text('Feedback'),
+              title: Text('Mobile App Support'),
               onTap: handleFeedbackTap,
             ),
           ),
@@ -73,27 +73,6 @@ class Profile extends StatelessWidget {
               onTap: handlePrivacyTap,
             ),
           ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.wifi_tethering),
-              title: Text('Advanced Wayfinding'),
-              onTap: () {
-                Navigator.pushNamed(
-                    context, RoutePaths.BluetoothPermissionsView);
-              },
-            ),
-          ),
-          //TODO: Reinstate to view AW developer view in debug mode
-          // if(!kReleaseMode) Card(
-          //   child: ListTile(
-          //     leading: Icon(Icons.settings_bluetooth),
-          //     title: Text('Advanced Wayfinding Developer View'),
-          //     onTap: () {
-          //       Navigator.pushNamed(
-          //           context, RoutePaths.AutomaticBluetoothLoggerView);
-          //     },
-          //   ),
-          // ),
           BuildInfo(),
         ],
       ),
@@ -105,7 +84,7 @@ class Profile extends StatelessWidget {
   }
 
   handleFeedbackTap() async {
-    const feedbackUrl = "https://eforms.ucsd.edu/view.php?id=175631";
+    const feedbackUrl = "https://eforms.ucsd.edu/view.php?id=668781";
     openLink(feedbackUrl);
   }
 

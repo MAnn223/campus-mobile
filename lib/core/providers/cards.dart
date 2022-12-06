@@ -4,10 +4,12 @@ import 'package:campus_mobile_experimental/core/providers/user.dart';
 import 'package:campus_mobile_experimental/core/services/cards.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:connectivity/connectivity.dart';
 
 class CardsDataProvider extends ChangeNotifier {
   CardsDataProvider() {
     ///DEFAULT STATES
+    _noInternet = false;
     _isLoading = false;
     _cardStates = {};
     _webCards = {};
@@ -19,7 +21,6 @@ class CardsDataProvider extends ChangeNotifier {
       'MyUCSDChart',
       'finals',
       'schedule',
-      'student_survey',
       'student_id',
       'employee_id',
       'availability',
@@ -30,14 +31,12 @@ class CardsDataProvider extends ChangeNotifier {
       'news',
       'weather',
       'speed_test',
-      'ventilation',
     ];
 
     // Native student cards
     _studentCards = [
       'finals',
       'schedule',
-      'student_survey',
       'student_id',
     ];
 
@@ -46,7 +45,6 @@ class CardsDataProvider extends ChangeNotifier {
       'MyUCSDChart',
       'staff_info',
       'employee_id',
-      'ventilation',
     ];
 
     for (String card in CardTitleConstants.titleMap.keys.toList()) {
@@ -62,6 +60,7 @@ class CardsDataProvider extends ChangeNotifier {
   }
 
   ///STATES
+  bool? _noInternet;
   bool? _isLoading;
   DateTime? _lastUpdated;
   String? _error;
@@ -77,6 +76,7 @@ class CardsDataProvider extends ChangeNotifier {
 
   ///Services
   final CardsService _cardsService = CardsService();
+  Connectivity _connectivity = Connectivity();
 
   void updateAvailableCards(String? ucsdAffiliation) async {
     _isLoading = true;
@@ -139,6 +139,38 @@ class CardsDataProvider extends ChangeNotifier {
     }
     _isLoading = false;
     notifyListeners();
+  }
+
+  Future changeInternetStatus(noInternet) async {
+    _noInternet = noInternet;
+  }
+
+  Future<void> initConnectivity() async {
+    try {
+      var status = await _connectivity.checkConnectivity();
+      if (status == ConnectivityResult.none) {
+        _noInternet = true;
+        notifyListeners();
+      } else {
+        _noInternet = false;
+        notifyListeners();
+      }
+    } catch (e) {
+      print("Encounter $e when monitoring Internet for cards");
+    }
+  }
+
+  void monitorInternet() async {
+    await initConnectivity();
+    _connectivity.onConnectivityChanged.listen((result) async {
+      if (result == ConnectivityResult.none) {
+        _noInternet = true;
+        notifyListeners();
+      } else {
+        _noInternet = false;
+        notifyListeners();
+      }
+    });
   }
 
   Future loadSavedData() async {
@@ -311,6 +343,7 @@ class CardsDataProvider extends ChangeNotifier {
 
   ///SIMPLE GETTERS
   bool? get isLoading => _isLoading;
+  bool? get noInternet => _noInternet;
   String? get error => _error;
   DateTime? get lastUpdated => _lastUpdated;
 

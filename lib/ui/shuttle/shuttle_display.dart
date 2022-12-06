@@ -14,8 +14,6 @@ class ShuttleDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // print("Building ${stop.name}");
-    print(arrivingShuttles);
     if (arrivingShuttles == null) {
       return Container(
         width: double.infinity,
@@ -34,19 +32,7 @@ class ShuttleDisplay extends StatelessWidget {
           buildInfoRow(),
           buildNextArrival(),
           Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0),
-                child: Text(
-                  "Next Arrivals",
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
-            ],
-          ),
+          whetherNextArrivals(),
           buildArrivalData()
         ],
       );
@@ -63,7 +49,7 @@ class ShuttleDisplay extends StatelessWidget {
       return Column(
         children: [
           Text(
-            arrivingShuttles![0].route!.name!,
+            arrivingShuttles![0].routeName!,
             style: TextStyle(fontSize: 16),
           ),
           buildTimetoArrivalText()
@@ -89,13 +75,13 @@ class ShuttleDisplay extends StatelessWidget {
             CircleAvatar(
               minRadius: 40,
               backgroundColor: HexColor(arrivingShuttles!.isEmpty
-                  ? "#B74093"
-                  : arrivingShuttles![0].route!.color!),
+                  ? "#CCCCCC"
+                  : arrivingShuttles![0].routeColor!),
               foregroundColor: Colors.black,
               child: Text(
                 arrivingShuttles!.isEmpty
-                    ? "S"
-                    : arrivingShuttles![0].route!.name![0],
+                    ? "?"
+                    : arrivingShuttles![0].routeName![0],
                 style: TextStyle(fontSize: 50),
               ),
             ),
@@ -139,16 +125,16 @@ class ShuttleDisplay extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: CircleAvatar(
             minRadius: 20,
-            backgroundColor: HexColor(shuttle.route!.color!),
+            backgroundColor: HexColor(shuttle.routeColor!),
             foregroundColor: Colors.black,
             child: Text(
-              shuttle.route!.name![0],
+              shuttle.routeName![0],
               style: TextStyle(fontSize: 25),
             ),
           ),
         ),
         Text(
-          shuttle.route!.name!,
+          shuttle.routeName!,
           style: TextStyle(fontSize: 16),
         ),
         Expanded(
@@ -168,8 +154,28 @@ class ShuttleDisplay extends StatelessWidget {
   String getArrivingShuttles() {
     String str = "";
     arrivingShuttles!.forEach((element) {
-      str += "Route: ${element.route!.id} - ${element.route!.name}\n";
+      str += "Route: ${element.routeId!} - ${element.routeName!}\n";
     });
     return str;
+  }
+
+  Widget whetherNextArrivals() {
+    if (arrivingShuttles!.length <= 1) {
+      return Text("");
+    } else {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: Text(
+              "Next Arrivals",
+              textAlign: TextAlign.left,
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+        ],
+      );
+    }
   }
 }

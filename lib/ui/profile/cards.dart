@@ -14,18 +14,39 @@ class _CardsViewState extends State<CardsView> {
   CardsDataProvider? _cardsDataProvider;
 
   @override
+  void initState() {
+    super.initState();
+    Provider.of<CardsDataProvider>(context, listen: false).monitorInternet();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _cardsDataProvider = Provider.of<CardsDataProvider>(context);
-    return ContainerView(
-      child: buildCardsList(context),
-    );
+    return ContainerView(child: buildCardsList(context));
   }
 
   Widget buildCardsList(BuildContext context) {
-    return ReorderableListView(
+    var tempView = new ReorderableListView(
       children: createList(context),
       onReorder: _onReorder,
     );
+
+    if( _cardsDataProvider!.noInternet! ) {
+      Future.delayed(Duration.zero, () => {
+        showDialog(context: context, builder: (BuildContext ctx) => AlertDialog(
+            title: const Text('No Internet'),
+            content: const Text('Cards requires an internet connection.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'Ok'),
+                child: const Text('Ok'),
+              ),
+            ]
+        ))
+      });
+    }
+
+    return tempView;
   }
 
   void _onReorder(int oldIndex, int newIndex) {
@@ -55,7 +76,6 @@ class _CardsViewState extends State<CardsView> {
     for (String card in _cardsDataProvider!.cardOrder!) {
       if (card == 'NativeScanner') continue;
       try {
-        //throw new DeferredLoadException("message");
         list.add(ListTile(
           leading: Icon(Icons.reorder),
           key: Key(card),
@@ -71,16 +91,16 @@ class _CardsViewState extends State<CardsView> {
       }
       catch (e) {
         FirebaseCrashlytics.instance.log('error getting $card in profile');
-        FirebaseCrashlytics.instance.recordError(e, StackTrace.fromString(e.toString()),
-          reason: "Profile/Cards: Failed to load Cards page",
-            fatal: false);
-        // temp list tile
-        list.add(ListTile(
-          leading: Icon(Icons.reorder),
-          title: Text('error'),
-        ));
+        FirebaseCrashlytics.instance.recordError(
+            e, StackTrace.fromString(e.toString()),
+            reason: "Profile/Cards: Failed to load Cards page",
+            fatal: false
+        );
+
+        _cardsDataProvider!.changeInternetStatus(true);
       }
     }
+
     return list;
   }
 }
