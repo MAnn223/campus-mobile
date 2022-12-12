@@ -48,7 +48,7 @@ class RouteTitles {
     'Notifications': 'Notifications',
     'Profile': 'Profile',
     'profile/cards_view': 'Cards',
-    'notifications/notifications_settings': "Notification Settings",
+    'notifications/notifications_settings': "Filter",
     'news/newslist': 'News',
     'news/news_detail_view': 'News',
     'events/eventslist': 'Events',
