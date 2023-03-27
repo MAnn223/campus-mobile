@@ -36,11 +36,12 @@ class CardContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (active != null && active!) {
-      return Card(
+      return Semantics(
+        label: cardSemanticLabel, 
+      child: Card(
         margin: EdgeInsets.only(
             top: 0.0, right: 0.0, bottom: cardMargin * 1.5, left: 0.0),
         semanticContainer: false,
-        cardSemanticLabel: this.cardSemanticLabel,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
@@ -69,7 +70,7 @@ class CardContainer extends StatelessWidget {
             ),
           ],
         ),
-      );
+      ));
     }
     return Container();
   }
