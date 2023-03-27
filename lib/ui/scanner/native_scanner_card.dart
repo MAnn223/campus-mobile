@@ -25,6 +25,7 @@ class NativeScannerCard extends StatelessWidget {
       child: () => buildCardContent(context),
       actionButtons: [buildActionButton(context)],
       hideMenu: false,
+      cardSemanticLabel: 'Scanner Card',
     );
   }
 

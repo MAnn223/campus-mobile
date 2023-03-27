@@ -15,6 +15,7 @@ class CardContainer extends StatelessWidget {
     this.overFlowMenu,
     this.actionButtons,
     this.hideMenu,
+    this.cardSemanticLabel,
   }) : super(key: key);
 
   /// required parameters
@@ -30,6 +31,7 @@ class CardContainer extends StatelessWidget {
   final Map<String, Function>? overFlowMenu;
   final bool? hideMenu;
   final List<Widget>? actionButtons;
+  final String? cardSemanticLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +40,7 @@ class CardContainer extends StatelessWidget {
         margin: EdgeInsets.only(
             top: 0.0, right: 0.0, bottom: cardMargin * 1.5, left: 0.0),
         semanticContainer: false,
+        cardSemanticLabel: this.cardSemanticLabel,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
@@ -48,7 +51,8 @@ class CardContainer extends StatelessWidget {
               title: Text(
                 titleText!,
                 style: TextStyle(
-                  color: Colors.grey,
+                  //color: Colors.grey,
+                  color: Colors.black,
                   fontSize: 18.0,
                 ),
               ),

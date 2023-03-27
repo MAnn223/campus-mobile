@@ -24,6 +24,7 @@ class DiningCard extends StatelessWidget {
       child: () => buildDiningCard(
           Provider.of<DiningDataProvider>(context).diningModels),
       actionButtons: buildActionButtons(context),
+      cardSemanticLabel: 'Dining Card, the list of restaurants',
     );
   }
 

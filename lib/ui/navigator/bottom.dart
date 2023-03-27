@@ -22,9 +22,11 @@ class _BottomTabBarState extends State<BottomTabBar> {
     Profile(),
   ];
 
+
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<BottomNavigationBarProvider>(context);
+    var naviconsize =  kBottomNavigationBarHeight * 0.8;
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(42),
@@ -58,19 +60,19 @@ class _BottomTabBarState extends State<BottomTabBar> {
         },
         items: [
           BottomNavigationBarItem(
-            icon: new Icon(Icons.home),
+            icon: new Icon(Icons.home, size: naviconsize,),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: new Icon(Icons.map),
+            icon: new Icon(Icons.map, size: naviconsize,),
             label: 'Map',
           ),
           BottomNavigationBarItem(
-            icon: new Icon(Icons.notifications),
+            icon: new Icon(Icons.notifications, size: naviconsize,),
             label: 'Notifications',
           ),
           BottomNavigationBarItem(
-            icon: new Icon(Icons.person),
+            icon: new Icon(Icons.person, size: naviconsize,),
             label: 'User Profile',
           ),
         ],

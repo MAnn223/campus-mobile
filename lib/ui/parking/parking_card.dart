@@ -43,6 +43,7 @@ class _ParkingCardState extends State<ParkingCard> {
       hide: () => Provider.of<CardsDataProvider>(context, listen: false)
           .toggleCard(cardId),
       actionButtons: buildActionButtons(),
+      cardSemanticLabel: 'Parking Card, slide to right check parking lot availability', 
     );
   }
 

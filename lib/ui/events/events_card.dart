@@ -35,7 +35,29 @@ class EventsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // return Semantics(
+    //   container: false,
+    //   label: 'Event Card, slide right for more events',
+    //   //excludeSemantics: true,
+    //   child: CardContainer(
+    //   active: Provider.of<CardsDataProvider>(context).cardStates![cardId],
+    //   hide: () => Provider.of<CardsDataProvider>(context, listen: false)
+    //       .toggleCard(cardId),
+    //   reload: () =>
+    //       Provider.of<EventsDataProvider>(context, listen: false).fetchEvents(),
+    //   isLoading: Provider.of<EventsDataProvider>(context).isLoading,
+    //   titleText: CardTitleConstants.titleMap[cardId],
+    //   errorText: Provider.of<EventsDataProvider>(context).error,
+    //   child: () => buildEventsCard(
+    //       Provider.of<EventsDataProvider>(context).eventsModels),
+    //   actionButtons: buildActionButtons(
+    //       context, Provider.of<EventsDataProvider>(context).eventsModels),        
+    //   )
+    // ); 
+
+    
     return CardContainer(
+      cardSemanticLabel: 'Event Card, slide right for more events',
       active: Provider.of<CardsDataProvider>(context).cardStates![cardId],
       hide: () => Provider.of<CardsDataProvider>(context, listen: false)
           .toggleCard(cardId),

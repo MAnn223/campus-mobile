@@ -58,6 +58,7 @@ class NewsCard extends StatelessWidget {
       errorText: Provider.of<NewsDataProvider>(context).error,
       child: () => buildNewsCard(),
       actionButtons: buildActionButtons(context),
+      cardSemanticLabel: 'News Portal',
     );
   }
 }

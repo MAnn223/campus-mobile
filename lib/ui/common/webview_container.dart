@@ -84,7 +84,8 @@ class _WebViewContainerState extends State<WebViewContainer>
               title: Text(
                 widget.titleText!,
                 style: TextStyle(
-                  color: Colors.grey,
+                  // color: Colors.grey,
+                  color: Colors.black,
                   fontSize: 18.0,
                 ),
               ),

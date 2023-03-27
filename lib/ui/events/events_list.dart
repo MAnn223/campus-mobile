@@ -3,6 +3,7 @@ import 'package:campus_mobile_experimental/core/providers/events.dart';
 import 'package:campus_mobile_experimental/ui/common/container_view.dart';
 import 'package:campus_mobile_experimental/ui/events/events_view_all.dart';
 import 'package:campus_mobile_experimental/ui/events/event_tile.dart';
+import 'package:campus_mobile_experimental/ui/common/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -49,14 +50,14 @@ class EventsList extends StatelessWidget {
     }
 
     if (listSize != null) {
-      return SingleChildScrollView(
+       return SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         scrollDirection: Axis.horizontal,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: eventTiles,
         ),
-      );
+      );      
     } else {
       return ContainerView(
         child: listOfEvents.isEmpty

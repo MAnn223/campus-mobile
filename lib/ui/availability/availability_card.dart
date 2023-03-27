@@ -39,6 +39,7 @@ class _AvailabilityCardState extends State<AvailabilityCard> {
       child: () =>
           buildAvailabilityCard(_availabilityDataProvider.availabilityModels),
       actionButtons: buildActionButtons(),
+      cardSemanticLabel: 'library traffic',
     );
   }
 
